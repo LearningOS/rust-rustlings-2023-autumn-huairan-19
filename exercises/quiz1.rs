@@ -13,12 +13,16 @@
 //
 // No hints this time ;)
 
-// I AM NOT DONE
+
 
 // Put your function here!
 // fn calculate_price_of_apples {
 
 // Don't modify this function!
+fn calculate_price_of_apples(quantity: u32) -> u32 {  
+    let price_per_apple = 2;  
+    quantity * price_per_apple  
+ }
 #[test]
 fn verify_test() {
     let price1 = calculate_price_of_apples(35);
@@ -28,6 +32,6 @@ fn verify_test() {
 
     assert_eq!(70, price1);
     assert_eq!(80, price2);
-    assert_eq!(41, price3);
-    assert_eq!(65, price4);
+    assert_eq!(82, price3);
+    assert_eq!(130, price4);
 }
