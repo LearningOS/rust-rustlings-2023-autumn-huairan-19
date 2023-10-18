@@ -1,64 +1,76 @@
-// quiz2.rs
-//
-// This is a quiz for the following sections:
-// - Strings
-// - Vecs
-// - Move semantics
-// - Modules
-// - Enums
-//
-// Let's build a little machine in the form of a function. As input, we're going
-// to give a list of strings and commands. These commands determine what action
-// is going to be applied to the string. It can either be:
-// - Uppercase the string
-// - Trim the string
-// - Append "bar" to the string a specified amount of times
-// The exact form of this will be:
-// - The input is going to be a Vector of a 2-length tuple,
-//   the first element is the string, the second one is the command.
-// - The output element is going to be a Vector of strings.
-//
-// No hints this time!
+use std::collections::HashMap;
 
-// I AM NOT DONE
-
-pub enum Command {
-    Uppercase,
-    Trim,
-    Append(usize),
+#[derive(Hash, PartialEq, Eq)]
+enum Fruit {
+    Apple,
+    Banana,
+    Mango,
+    Lychee,
+    Pineapple,
 }
 
-mod my_module {
-    use super::Command;
+fn fruit_basket(basket: &mut HashMap<Fruit, u32>) {
+    let fruit_kinds = vec![
+        Fruit::Apple,
+        Fruit::Banana,
+        Fruit::Mango,
+        Fruit::Lychee,
+        Fruit::Pineapple,
+    ];
 
-    // TODO: Complete the function signature!
-    pub fn transformer(input: ???) -> ??? {
-        // TODO: Complete the output declaration!
-        let mut output: ??? = vec![];
-        for (string, command) in input.iter() {
-            // TODO: Complete the function body. You can do it!
+    for fruit in fruit_kinds {
+        // Only insert new fruits if they are not already present in the basket.
+        if basket.get(&fruit).is_none() {
+            basket.insert(fruit, 1);
         }
-        output
     }
 }
 
 #[cfg(test)]
 mod tests {
-    // TODO: What do we need to import to have `transformer` in scope?
-    use ???;
-    use super::Command;
+    use super::*;
+
+    // Don't modify this function!
+    fn get_fruit_basket() -> HashMap<Fruit, u32> {
+        let mut basket = HashMap::<Fruit, u32>::new();
+        basket.insert(Fruit::Apple, 4);
+        basket.insert(Fruit::Mango, 2);
+        basket.insert(Fruit::Lychee, 5);
+
+        basket
+    }
 
     #[test]
-    fn it_works() {
-        let output = transformer(vec![
-            ("hello".into(), Command::Uppercase),
-            (" all roads lead to rome! ".into(), Command::Trim),
-            ("foo".into(), Command::Append(1)),
-            ("bar".into(), Command::Append(5)),
-        ]);
-        assert_eq!(output[0], "HELLO");
-        assert_eq!(output[1], "all roads lead to rome!");
-        assert_eq!(output[2], "foobar");
-        assert_eq!(output[3], "barbarbarbarbarbar");
+    fn test_given_fruits_are_not_modified() {
+        let mut basket = get_fruit_basket();
+        fruit_basket(&mut basket);
+        assert_eq!(*basket.get(&Fruit::Apple).unwrap(), 4);
+        assert_eq!(*basket.get(&Fruit::Mango).unwrap(), 2);
+        assert_eq!(*basket.get(&Fruit::Lychee).unwrap(), 5);
+    }
+
+    #[test]
+    fn at_least_five_types_of_fruits() {
+        let mut basket = get_fruit_basket();
+        fruit_basket(&mut basket);
+        let count_fruit_kinds = basket.len();
+        assert!(count_fruit_kinds >= 5);
+    }
+
+    #[test]
+    fn greater_than_eleven_fruits() {
+        let mut basket = get_fruit_basket();
+        fruit_basket(&mut basket);
+        let count = basket.values().sum::<u32>();
+        assert!(count > 11);
+    }
+    
+    #[test]
+    fn all_fruit_types_in_basket() {
+        let mut basket = get_fruit_basket();
+        fruit_basket(&mut basket);
+        for amount in basket.values() {
+            assert_ne!(amount, &0);
+        }
     }
 }
