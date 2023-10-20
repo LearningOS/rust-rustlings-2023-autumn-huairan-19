@@ -7,7 +7,11 @@
 // Execute `rustlings hint tests8` or use the `hint` watch subcommand for a
 // hint.
 
-fn main() {}
+
+fn main() {
+    let your_command = "Your command here, please checkout exercises/tests/build.rs";
+    println!("cargo:{}", your_command);
+}
 
 #[cfg(test)]
 mod tests {
